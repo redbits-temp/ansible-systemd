@@ -9,7 +9,10 @@
   changed_when: true
 
 - name: restart systemd-resolved
+  listen: restart systemd-resolved
   ansible.builtin.service:
     name: systemd-resolved
     state: restarted
-  when: service_default_state | default('started') == 'started'
+  when:
+    - service_default_state | default('started') == 'started'
+    - resolved_unit.rc == 0
