@@ -69,6 +69,13 @@
     - systemd-configure-update
     - systemd-configure-update-logind
 
+- name: detect systemd-resolved unit
+  ansible.builtin.shell: |
+    systemctl list-unit-files systemd-resolved.service >/dev/null 2>&1
+  register: resolved_unit
+  changed_when: false
+  failed_when: false
+  
 - name: configure | update | resolved
   ansible.builtin.template:
     src: "{{ systemd_etc_resolved_file.lstrip('/') }}.j2"
